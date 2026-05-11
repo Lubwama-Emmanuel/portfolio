@@ -1,24 +1,132 @@
+export type ProjectCategory = "mobile" | "web";
+
 export type Project = {
   slug: string;
   name: string;
   tagline: string;
   period: string;
-  /** App store or case-study URL; omit when not public */
+  /** App Store or primary product URL when not using liveUrl */
   href?: string;
+  /** Marketing / deployed site (typical for web projects) */
+  liveUrl?: string;
   stack: string[];
   highlights: string[];
+  category?: ProjectCategory;
+  /**
+   * Optional static thumb under `public/` or absolute URL. When omitted, web
+   * projects use `liveUrl` via `/api/site-preview`; mobile can use `gallery[0]`.
+   */
+  image?: string;
   /**
    * Markdown file under repo `projects/` (write-ups; images via `/project-files/<slug>/file.jpg`).
    */
   detailMd?: string;
+  /** Screenshots: `/project-files/<slug>/file` (files next to markdown) or `/projects/...` from `public/`. */
+  gallery?: string[];
+  /** Plain-language interview cues; if omitted, highlights are reused on the case study page. */
+  interviewTakeaways?: string[];
 };
 
 export const projects: Project[] = [
+  // ── Web ──
+  {
+    slug: "space4climate",
+    name: "Space4Climate",
+    tagline:
+      "Fun, online educational experience for schoolkids globally about space and climate change, combining film-making and social media.",
+    period: "2024",
+    category: "web",
+    liveUrl: "https://space4climate.vercel.app",
+    stack: ["Next.js", "React", "Tailwind CSS", "Vercel"],
+    highlights: [
+      "Global, kid-friendly learning on space and climate",
+      "Film and social-style storytelling on the web",
+      "Deployed on Vercel for fast, reliable delivery",
+    ],
+  },
+  {
+    slug: "masifa",
+    name: "Masifa Group",
+    tagline:
+      "OFSTED-registered children's homes website for a specialist SEMH/EBD care provider—referrals, activities, and careers.",
+    period: "2024",
+    category: "web",
+    liveUrl: "https://masifa.vercel.app",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    highlights: [
+      "Clear pathways for referrals and family enquiries",
+      "Activities and day-in-the-life content for trust-building",
+      "Careers and recruitment sections for care professionals",
+    ],
+  },
+  {
+    slug: "queensgate",
+    name: "Queensgate International School",
+    tagline:
+      "Full-featured school site for an Ontario-certified online international school—admissions, academics, and a multi-step application flow.",
+    period: "2024",
+    category: "web",
+    liveUrl: "https://queensgate.vercel.app",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    highlights: [
+      "Structured admissions and programme discovery",
+      "Multi-step application UX with strong information hierarchy",
+      "Motion-backed UI for a polished institutional brand",
+    ],
+  },
+  {
+    slug: "nextgenfighthub",
+    name: "Next Gen Fight Hub",
+    tagline:
+      "Gym website for Muay Thai, Boxing & MMA in Basildon, Essex—schedules, membership tiers, and a community hub.",
+    period: "2024",
+    category: "web",
+    liveUrl: "https://nextgenfighthub.vercel.app",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    highlights: [
+      "Class schedules and training programmes front and centre",
+      "Membership tiers and pricing communicated clearly",
+      "Community-focused hub for retention and sign-ups",
+    ],
+  },
+  {
+    slug: "mashongatea",
+    name: "Mashongatea",
+    tagline:
+      "Professional business website—services, portfolio, responsive layout, and performance-focused delivery.",
+    period: "2024",
+    category: "web",
+    liveUrl: "https://www.mashongatea.com",
+    stack: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+    highlights: [
+      "Service and portfolio storytelling for B2B credibility",
+      "Responsive layouts across breakpoints",
+      "Optimised static and dynamic patterns for speed",
+    ],
+  },
+  {
+    slug: "actualisationproject",
+    name: "The Actualisation Project",
+    tagline:
+      "Coaching and mentorship platform—truth, connection, and change—with assessments, programmes, and 1:1 coaching.",
+    period: "2024",
+    category: "web",
+    liveUrl: "https://theactualisationproject.vercel.app",
+    stack: ["Next.js", "React", "Tailwind CSS", "Vercel"],
+    highlights: [
+      "Assessment and programme discovery flows",
+      "1:1 coaching positioning and clear CTAs",
+      "Warm, editorial UI aligned with the brand voice",
+    ],
+  },
+
+  // ── Mobile & other product work ──
   {
     slug: "wire24",
     name: "Wire24",
+    category: "mobile",
     tagline:
-      "Fintech mobile client: wallets, KYC, notifications, and authenticated flows against api.wire24.co.",
+      "Cross-platform fintech: mobile money, bank transfers, merchant payments, and wallet flows where trust is part of the UI.",
     period: "2023–2025",
     stack: [
       "React Native",
@@ -31,15 +139,21 @@ export const projects: Project[] = [
       "NativeWind",
     ],
     highlights: [
-      "Bearer-authenticated API layer with persisted client state",
-      "Sortable home widgets, connectivity UX, optional iOS Live Activities / widgets",
-      "KYC, notifications, maps, and biometric-related integrations",
+      "Founding engineer on money movement: wallets, transfers, merchants, KYC",
+      "Payment integrations and live balances against api.wire24.co",
+      "Architecture calls on persistence, RTK Query, and safe native feature rollout",
+    ],
+    interviewTakeaways: [
+      "I joined early enough that product sense meant sequencing what not to build yet—while still shipping something users could move money through every sprint.",
+      "Financial UX forced me to design for panic: loading, retry, and empty states had to answer “where is my money?” without a support ticket.",
+      "I shipped iOS widgets and Live Activities only where they reduced anxiety; on Android I kept builds stable by refusing to load native modules that do not exist on that platform.",
     ],
     detailMd: "Wire24/PORTFOLIO-WIRE24.md",
   },
   {
     slug: "cafe-jafn",
     name: "Café Jaf'n",
+    category: "mobile",
     tagline: "Order, favourites, and delivery for a café brand.",
     period: "2025",
     href: "https://apps.apple.com/ug/app/cafe-jafn/id6746074084",
@@ -50,10 +164,17 @@ export const projects: Project[] = [
       "Onboarding, auth, and profile (help, terms, privacy)",
     ],
     detailMd: "Cafe Jaf'n Kampala/portfolio-cafe-jafn-mobile.md",
+    gallery: [
+      "/project-files/cafe-jafn/1755162313506.jpg",
+      "/project-files/cafe-jafn/1755162313525.jpg",
+      "/project-files/cafe-jafn/1755162313541.jpg",
+      "/project-files/cafe-jafn/1755162313556.jpg",
+    ],
   },
   {
     slug: "tuwe",
     name: "Tuwe",
+    category: "mobile",
     tagline: "Community platform: marketplace, rides, payments, and civic tools.",
     period: "2025",
     href: "https://apps.apple.com/ug/app/tuwe/id6752911597",
@@ -64,10 +185,15 @@ export const projects: Project[] = [
       "Location-based services, notices, and candidate discovery",
     ],
     detailMd: "Tuwe/PORTFOLIO_PROJECT_BRIEF.md",
+    gallery: [
+      "/project-files/tuwe/Simulator Screenshot - iPhone 17 Pro Max - 2025-11-05 at 12.52.13.png",
+      "/project-files/tuwe/Simulator Screenshot - iPhone 17 Pro Max - 2025-11-05 at 12.53.11.png",
+    ],
   },
   {
     slug: "glam-n-go",
     name: "Glam n' Go",
+    category: "mobile",
     tagline: "Multi-vendor e-commerce on iOS and Android.",
     period: "2024",
     href: "https://apps.apple.com/ug/app/glam-n-go/id6503872122",
@@ -85,10 +211,15 @@ export const projects: Project[] = [
       "EAS channels and GitHub Actions lint CI",
     ],
     detailMd: "Glam n' Go/PORTFOLIO_glam_n_go.md",
+    gallery: [
+      "/project-files/glam-n-go/Simulator Screenshot - iPhone 15 Pro Max - 2024-08-13 at 14.21.15.png",
+      "/project-files/glam-n-go/Simulator Screenshot - iPhone 15 Pro Max - 2024-08-13 at 14.23.51.png",
+    ],
   },
   {
     slug: "easy-gas",
     name: "Easy Gas",
+    category: "mobile",
     tagline:
       "Expo app for shopping, orders, delivery, favorites, and notifications—plus admin catalog, orders, and broadcasts.",
     period: "2024",
@@ -106,10 +237,15 @@ export const projects: Project[] = [
       "OneSignal + Edge Functions; EAS builds and OTA updates",
     ],
     detailMd: "EasyGas/portfolio-easygas-job-search.md",
+    gallery: [
+      "/project-files/easy-gas/Screenshot_1732777581.png",
+      "/project-files/easy-gas/Screenshot_1732777624.png",
+    ],
   },
   {
     slug: "ncpwd-access",
     name: "NCPWD Access",
+    category: "mobile",
     tagline:
       "Mobile client for NCPWD: auth, reports, services, learning content, and notifications against a Cloud Run API.",
     period: "2024",
@@ -127,10 +263,15 @@ export const projects: Project[] = [
       "Accessibility and i18n; EAS and custom Firebase iOS wiring",
     ],
     detailMd: "NCPWD/portfolio-ncpwd-access-app.md",
+    gallery: [
+      "/project-files/ncpwd-access/Simulator Screenshot - iPhone 17 Pro - 2026-05-06 at 04.42.11.png",
+      "/project-files/ncpwd-access/Simulator Screenshot - iPhone 17 Pro - 2026-05-06 at 04.42.21.png",
+    ],
   },
   {
     slug: "justknow",
     name: "JustKnow",
+    category: "mobile",
     tagline:
       "Expo client for posts, messaging, businesses, ride-hailing, and notifications—REST + Socket.IO to justknow.dfts.cloud.",
     period: "2024",
@@ -152,6 +293,7 @@ export const projects: Project[] = [
   {
     slug: "wims-facematch",
     name: "FaceMatch / WIMS",
+    category: "mobile",
     tagline:
       "Android & iOS clients for on-device face detection, recognition, liveness, and WIMS device API integration.",
     period: "2024",
@@ -172,10 +314,15 @@ export const projects: Project[] = [
       "Encrypted session storage; offline-friendly sync and retry patterns",
     ],
     detailMd: "WIMS/PORTFOLIO_WIMS_FACEMATCH.md",
+    gallery: [
+      "/project-files/wims-facematch/16ai-store-black.png",
+      "/project-files/wims-facematch/Simulator Screenshot - iPhone 17 Pro - 2026-05-06 at 04.42.11.png",
+    ],
   },
   {
     slug: "harvest-monitor",
     name: "Harvest Monitor",
+    category: "mobile",
     tagline: "Real-time environmental monitoring for harvest storage.",
     period: "2023",
     stack: ["React Native", "Expo", "Redux", "Go", "Firebase"],
@@ -188,4 +335,25 @@ export const projects: Project[] = [
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
+}
+
+export function isWebProject(project: Project): boolean {
+  return project.category === "web";
+}
+
+/** Card / OG thumb: explicit `image`, else live site preview for web, else first gallery shot. */
+export function getProjectThumbSrc(project: Project): string | undefined {
+  if (project.image) return project.image;
+  if (isWebProject(project) && project.liveUrl) {
+    return `/api/site-preview?url=${encodeURIComponent(project.liveUrl)}`;
+  }
+  return project.gallery?.[0];
+}
+
+/** Case study gallery: explicit gallery, or one live-derived web preview when no shots are checked in. */
+export function getProjectGallerySources(project: Project): string[] {
+  if (project.gallery?.length) return [...project.gallery];
+  const thumb = getProjectThumbSrc(project);
+  if (isWebProject(project) && thumb) return [thumb];
+  return [];
 }

@@ -8,6 +8,7 @@ export function JsonLd() {
     name: site.name,
     jobTitle: site.title,
     url,
+    image: `${url}/emmanuel.jpg`,
     email: site.email,
     sameAs: [...site.sameAs],
   };

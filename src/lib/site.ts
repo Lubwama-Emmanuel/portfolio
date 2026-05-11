@@ -1,7 +1,13 @@
+/**
+ * Canonical site URL for Open Graph, Twitter cards, sitemap, and JSON-LD.
+ * Override with NEXT_PUBLIC_SITE_URL in `.env.local` (e.g. http://localhost:3000 for purely local OG testing).
+ */
+const DEFAULT_SITE_URL = "https://portfolio-two-ruby-56.vercel.app";
+
 export function getSiteUrl(): string {
-  const raw =
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() ?? "http://localhost:3000";
-  return raw.replace(/\/$/, "");
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (raw) return raw.replace(/\/$/, "");
+  return DEFAULT_SITE_URL;
 }
 
 export const site = {
@@ -11,6 +17,8 @@ export const site = {
   phone: "+256706039119",
   github: "https://github.com/Lubwama-Emmanuel",
   linkedin: "https://www.linkedin.com/in/lubwama-emmanuel-b35377226",
+  /** Static résumé in `public/` (Markdown until a PDF is added). */
+  resumePath: "/Emmanuel-Lubwama-Resume.md",
   sameAs: [
     "https://github.com/Lubwama-Emmanuel",
     "https://www.linkedin.com/in/lubwama-emmanuel-b35377226",

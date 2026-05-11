@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Syne } from "next/font/google";
+import { AppFrame } from "@/components/app-frame";
+import { CursorSpotlight } from "@/components/cursor-spotlight";
 import { JsonLd } from "@/components/json-ld";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { seoDescription } from "@/content/profile";
 import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -28,21 +29,18 @@ export const metadata: Metadata = {
     default: "Emmanuel Lubwama — Software Engineer",
     template: "%s — Emmanuel Lubwama",
   },
-  description:
-    "Full-stack engineer building production web and mobile apps with React, React Native, Next.js, and Node.js. Fintech, e-commerce, and real-time products.",
+  description: seoDescription,
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "Emmanuel Lubwama",
     title: "Emmanuel Lubwama — Software Engineer",
-    description:
-      "Full-stack engineer building production web and mobile apps with React, React Native, Next.js, and Node.js.",
+    description: seoDescription,
   },
   twitter: {
     card: "summary_large_image",
     title: "Emmanuel Lubwama — Software Engineer",
-    description:
-      "Full-stack engineer building production web and mobile apps with React, React Native, Next.js, and Node.js.",
+    description: seoDescription,
   },
 };
 
@@ -60,11 +58,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">
-        <JsonLd />
-        <SiteHeader />
-        <main className="flex flex-1 flex-col">{children}</main>
-        <SiteFooter />
+      <body className="relative min-h-full font-sans">
+        <CursorSpotlight />
+        <div className="relative z-10">
+          <JsonLd />
+          <AppFrame>{children}</AppFrame>
+        </div>
       </body>
     </html>
   );

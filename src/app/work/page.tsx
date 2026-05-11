@@ -1,97 +1,186 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { projects } from "@/content/projects";
+import { ProjectThumb } from "@/components/project-thumb";
+import {
+  getProjectThumbSrc,
+  isWebProject,
+  projects,
+  type Project,
+} from "@/content/projects";
 import { getSiteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Selected projects: React Native and Next.js apps for fintech, community platforms, e-commerce, and monitoring.",
+    "Websites and mobile apps: Next.js marketing sites, React Native and native Kotlin/Swift products, fintech, and community platforms.",
   alternates: {
     canonical: `${getSiteUrl()}/work`,
   },
 };
 
-export default function WorkPage() {
+function ProjectLinks({ p }: { p: Project }) {
+  const hasCaseStudy = Boolean(p.detailMd);
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8 lg:py-24">
-      <p className="text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-        Work
-      </p>
-      <h1 className="font-display mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-[var(--text)] sm:text-5xl">
-        Projects shipped to real users
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg text-[var(--muted)]">
-        Mobile-first products with thoughtful UX, solid backends, and
-        production-grade releases.
-      </p>
+    <div className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs">
+      {hasCaseStudy ? (
+        <Link
+          href={`/work/${p.slug}`}
+          className="text-[var(--accent)] underline-offset-4 hover:underline"
+        >
+          Case study →
+        </Link>
+      ) : (
+        <Link
+          href={`/work/${p.slug}`}
+          className="text-[var(--accent)] underline-offset-4 hover:underline"
+        >
+          Overview →
+        </Link>
+      )}
+      {p.liveUrl ? (
+        <a
+          href={p.liveUrl}
+          className="text-[var(--muted)] underline-offset-4 hover:text-[var(--text)] hover:underline"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Live site ↗
+        </a>
+      ) : null}
+      {p.href ? (
+        <a
+          href={p.href}
+          className="text-[var(--muted)] underline-offset-4 hover:text-[var(--text)] hover:underline"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          App Store ↗
+        </a>
+      ) : null}
+      {!p.liveUrl && !p.href && p.category !== "web" ? (
+        <span className="text-[var(--muted)]">Store link soon</span>
+      ) : null}
+    </div>
+  );
+}
 
-      <ul className="mt-16 space-y-6">
-        {projects.map((p) => (
-          <li key={p.slug}>
-            <article className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-8 transition-colors hover:border-[var(--muted)] lg:p-10">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                <div className="max-w-2xl">
-                  <p className="text-xs text-[var(--muted)]">{p.period}</p>
-                  <h2 className="font-display mt-2 text-2xl font-semibold text-[var(--text)] sm:text-3xl">
-                    <Link
-                      href={`/work/${p.slug}`}
-                      className="transition-opacity hover:opacity-80"
-                    >
-                      {p.name}
-                    </Link>
-                  </h2>
-                  <p className="mt-3 text-[var(--muted)]">{p.tagline}</p>
-                  <ul className="mt-6 space-y-2 text-sm text-[var(--text)]">
-                    {p.highlights.map((h) => (
-                      <li key={h} className="flex gap-2">
-                        <span className="text-[var(--accent)]" aria-hidden>
-                          ·
-                        </span>
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex shrink-0 flex-col items-start gap-4 lg:items-end">
-                  <div className="flex flex-wrap gap-2 lg:justify-end">
-                    {p.stack.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--muted)]"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-                    <Link
-                      href={`/work/${p.slug}`}
-                      className="text-sm font-medium text-[var(--accent)] underline-offset-4 hover:underline"
-                    >
-                      Case study →
-                    </Link>
-                    {p.href ? (
-                      <a
-                        href={p.href}
-                        className="text-sm font-medium text-[var(--muted)] underline-offset-4 hover:text-[var(--text)] hover:underline"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        App Store ↗
-                      </a>
-                    ) : (
-                      <span className="text-sm text-[var(--muted)]">
-                        App listing soon
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </article>
+function ProjectRow({ p, index }: { p: Project; index: number }) {
+  const thumb = getProjectThumbSrc(p);
+  const flip = index % 2 === 1;
+
+  const text = (
+    <div className="min-w-0">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 className="text-lg font-semibold text-[var(--text)]">
+          <Link
+            href={`/work/${p.slug}`}
+            className="transition-colors hover:text-[var(--accent)]"
+          >
+            {p.name}
+          </Link>
+        </h2>
+        <span className="font-mono text-xs text-[var(--muted)]">{p.period}</span>
+        <span className="font-mono text-xs text-[var(--accent)]">
+          {p.category === "web" ? "Web" : "Mobile"}
+        </span>
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+        {p.tagline}
+      </p>
+      <ul className="mt-4 space-y-2 text-sm leading-relaxed text-[var(--muted)]">
+        {p.highlights.map((h) => (
+          <li key={h} className="flex gap-2">
+            <span className="text-[var(--accent)]" aria-hidden>
+              ·
+            </span>
+            <span>{h}</span>
           </li>
         ))}
       </ul>
+      <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--muted)]">
+        {p.stack.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
+      <div className="mt-5">
+        <ProjectLinks p={p} />
+      </div>
+    </div>
+  );
+
+  const media = thumb ? (
+    <Link
+      href={`/work/${p.slug}`}
+      className="block shrink-0 lg:max-w-md"
+      aria-label={`${p.name} — open project`}
+    >
+      <ProjectThumb src={thumb} alt={p.name} />
+    </Link>
+  ) : (
+    <div className="aspect-[16/10] w-full max-w-md rounded-lg border border-dashed border-[var(--border)] bg-[var(--accent-dim)]/30" />
+  );
+
+  return (
+    <li>
+      <article className="grid gap-8 border-t border-[var(--border)] pt-12 lg:grid-cols-2 lg:items-start lg:gap-10">
+        {flip ? (
+          <>
+            <div className="lg:order-2">{media}</div>
+            <div className="lg:order-1">{text}</div>
+          </>
+        ) : (
+          <>
+            {media}
+            {text}
+          </>
+        )}
+      </article>
+    </li>
+  );
+}
+
+export default function WorkPage() {
+  const web = projects.filter(isWebProject);
+  const mobile = projects.filter((p) => !isWebProject(p));
+
+  return (
+    <div className="max-w-3xl">
+      <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] sm:text-5xl">
+        Websites &amp; mobile products
+      </h1>
+      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
+        Next.js sites for schools, care providers, and brands—plus React Native
+        and Kotlin/Swift apps for fintech, commerce, and community platforms.
+      </p>
+
+      <section className="mt-16">
+        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
+          Web
+        </h2>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">
+          Marketing and product sites deployed on Vercel or the open web.
+        </p>
+        <ul className="mt-10 space-y-0">
+          {web.map((p, i) => (
+            <ProjectRow key={p.slug} p={p} index={i} />
+          ))}
+        </ul>
+      </section>
+
+      <section className="mt-8">
+        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
+          Mobile &amp; native
+        </h2>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">
+          Production apps with deep integrations, offline-aware flows, and store
+          releases where applicable.
+        </p>
+        <ul className="mt-10 space-y-0">
+          {mobile.map((p, i) => (
+            <ProjectRow key={p.slug} p={p} index={i} />
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

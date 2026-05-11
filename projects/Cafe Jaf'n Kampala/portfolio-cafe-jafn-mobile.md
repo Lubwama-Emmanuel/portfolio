@@ -85,24 +85,6 @@ Factual notes grounded in **this repository** (`cafe-jafn`). Where something is 
 
 ---
 
-## Screenshots
-
-Captured during development; image files sit next to this markdown under `projects/Cafe Jaf'n Kampala/` and are served on the portfolio site via `/project-files/cafe-jafn/…`.
-
-![](/project-files/cafe-jafn/1755162313506.jpg)
-
-![](/project-files/cafe-jafn/1755162313525.jpg)
-
-![](/project-files/cafe-jafn/1755162313541.jpg)
-
-![](/project-files/cafe-jafn/1755162313556.jpg)
-
-![](/project-files/cafe-jafn/1755162313582.jpg)
-
-![](/project-files/cafe-jafn/1755162313607.jpg)
-
----
-
 ## 8) Suggested portfolio labels
 
 - Mobile  

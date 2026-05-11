@@ -3,6 +3,8 @@ import path from "path";
 import { NextResponse } from "next/server";
 import { getProjectBySlug } from "@/content/projects";
 
+export const runtime = "nodejs";
+
 const MIME: Record<string, string> = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -11,17 +13,27 @@ const MIME: Record<string, string> = {
   ".gif": "image/gif",
 };
 
+function toPathSegments(
+  pathParam: string | string[] | undefined,
+): string[] {
+  if (pathParam === undefined) return [];
+  if (Array.isArray(pathParam)) return pathParam.filter(Boolean);
+  const s = String(pathParam);
+  return s ? [s] : [];
+}
+
 export async function GET(
   _request: Request,
-  context: { params: Promise<{ slug: string; path: string[] }> },
+  context: { params: Promise<{ slug: string; path: string | string[] }> },
 ) {
-  const { slug, path: segments } = await context.params;
+  const { slug, path: pathParam } = await context.params;
   const project = getProjectBySlug(slug);
   if (!project?.detailMd) {
     return new NextResponse("Not found", { status: 404 });
   }
 
   const folder = path.dirname(project.detailMd);
+  const segments = toPathSegments(pathParam);
   const relativeFile = path.join(...segments);
   if (!relativeFile || relativeFile.includes("..")) {
     return new NextResponse("Not found", { status: 404 });
@@ -45,7 +57,8 @@ export async function GET(
   }
 
   const body = fs.readFileSync(full);
-  return new NextResponse(body, {
+  const bytes = new Uint8Array(body);
+  return new NextResponse(bytes, {
     headers: {
       "Content-Type": contentType,
       "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",

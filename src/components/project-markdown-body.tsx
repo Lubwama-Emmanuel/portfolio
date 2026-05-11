@@ -14,15 +14,21 @@ export function ProjectMarkdownBody({ markdown }: Props) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          img: ({ src, alt }) => (
-            // eslint-disable-next-line @next/next/no-img-element -- CMS-style paths from /public
-            <img
-              src={src ?? ""}
-              alt={alt ?? ""}
-              className="my-8 w-full max-w-full rounded-xl border border-[var(--border)] bg-black/15 object-contain"
-              loading="lazy"
-            />
-          ),
+          img: ({ src, alt }) => {
+            const raw = typeof src === "string" ? src.trim() : "";
+            const resolved =
+              raw.startsWith("/") || raw.startsWith("http")
+                ? raw
+                : `/${raw.replace(/^\.?\//, "")}`;
+            return (
+              <img
+                src={resolved}
+                alt={alt ?? ""}
+                className="my-8 block h-auto w-full max-w-full rounded-xl border border-[var(--border)] bg-black/15 object-contain"
+                decoding="async"
+              />
+            );
+          },
           a: ({ href, children }) => (
             <a
               href={href}

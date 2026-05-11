@@ -30,6 +30,12 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
+/* Custom cursor + spotlight (see `CursorSpotlight`); Tab restores native cursor */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
 .font-display {
   font-family: var(--font-display), system-ui, sans-serif;
 }
@@ -47,6 +53,12 @@ button:focus-visible {
   font-size: 1rem;
   line-height: 1.75;
   color: var(--muted);
+}
+
+.md-prose img {
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
 
 .md-prose > :first-child {

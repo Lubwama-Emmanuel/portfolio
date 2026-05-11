@@ -30,6 +30,10 @@ The case study page strips the **first `#` heading** from the markdown so it doe
 
 `harvest-monitor` has no `detailMd` yet—add a folder + file when ready.
 
+### Web project thumbnails
+
+Add PNG/JPG files under `public/projects/` using the same names as in `projects.ts` (e.g. `space4climate.png`, `masifa.png`). Until they exist, thumbnails may appear broken in dev; the layout is ready.
+
 ## Images next to your `.md` file
 
 If screenshots live in the **same directory** as your markdown (e.g. `projects/Cafe Jaf'n Kampala/*.jpg`), reference them with:

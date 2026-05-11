@@ -1,150 +1,237 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { headline, summary } from "@/content/profile";
-import { projects } from "@/content/projects";
+import { ProfileAvatar } from "@/components/profile-avatar";
+import { ProjectThumb } from "@/components/project-thumb";
+import { experience } from "@/content/experience";
+import {
+  headline,
+  seoDescription,
+  skillGroups,
+  summary,
+  unescoRecognition,
+} from "@/content/profile";
+import {
+  getProjectThumbSrc,
+  isWebProject,
+  projects,
+  type Project,
+} from "@/content/projects";
 import { getSiteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
+  description: seoDescription,
   alternates: {
     canonical: getSiteUrl(),
   },
 };
 
-export default function HomePage() {
-  const featured = projects.slice(0, 3);
+function stackChips() {
+  return skillGroups
+    .flatMap((g) => g.items)
+    .slice(0, 14)
+    .join(" · ");
+}
+
+function FeaturedProjectRow({
+  project: p,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) {
+  const thumb = getProjectThumbSrc(p);
+  const flip = index % 2 === 1;
+
+  const body = (
+    <div className="min-w-0">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h3 className="text-lg font-semibold text-[var(--text)]">
+          <Link
+            href={`/work/${p.slug}`}
+            className="transition-colors hover:text-[var(--accent)]"
+          >
+            {p.name}
+          </Link>
+        </h3>
+        <span className="font-mono text-xs text-[var(--muted)]">{p.period}</span>
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+        {p.tagline}
+      </p>
+      <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--muted)]">
+        {p.stack.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
+      <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs">
+        <Link
+          href={`/work/${p.slug}`}
+          className="text-[var(--accent)] underline-offset-4 hover:underline"
+        >
+          {p.detailMd ? "Case study →" : "Overview →"}
+        </Link>
+        {p.liveUrl ? (
+          <a
+            href={p.liveUrl}
+            className="text-[var(--muted)] underline-offset-4 hover:text-[var(--text)] hover:underline"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Live site ↗
+          </a>
+        ) : null}
+        {p.href ? (
+          <a
+            href={p.href}
+            className="text-[var(--muted)] underline-offset-4 hover:text-[var(--text)] hover:underline"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            App Store ↗
+          </a>
+        ) : null}
+      </div>
+    </div>
+  );
+
+  const media = thumb ? (
+    <Link
+      href={`/work/${p.slug}`}
+      className="block shrink-0"
+      aria-label={`${p.name} — open project`}
+    >
+      <ProjectThumb src={thumb} alt={p.name} />
+    </Link>
+  ) : (
+    <div className="aspect-[16/10] w-full rounded-lg border border-dashed border-[var(--border)] bg-[var(--accent-dim)]/40" />
+  );
 
   return (
-    <>
-      <section className="relative overflow-hidden border-b border-[var(--border)]">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.35]"
-          aria-hidden
-          style={{
-            backgroundImage:
-              "radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-dim), transparent)",
-          }}
-        />
-        <div className="relative mx-auto max-w-5xl px-6 pb-24 pt-20 lg:px-8 lg:pb-32 lg:pt-28">
-          <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-            Software engineer
-          </p>
-          <h1 className="font-display max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight text-[var(--text)] sm:text-5xl lg:text-6xl">
-            {headline}
-          </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
-            {summary[0]}
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Link
-              href="/work"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[var(--accent)] px-6 text-sm font-medium text-[var(--on-accent)] transition-opacity hover:opacity-90"
-            >
-              View work
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex h-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-6 text-sm font-medium text-[var(--text)] transition-colors hover:border-[var(--muted)]"
-            >
-              Get in touch
-            </Link>
-          </div>
-        </div>
-      </section>
+    <li>
+      <article className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-10">
+        {flip ? (
+          <>
+            <div className="lg:order-2">{media}</div>
+            <div className="lg:order-1">{body}</div>
+          </>
+        ) : (
+          <>
+            {media}
+            {body}
+          </>
+        )}
+      </article>
+    </li>
+  );
+}
 
-      <section className="mx-auto max-w-5xl px-6 py-20 lg:px-8 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div>
-            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-              Approach
-            </h2>
-            <p className="mt-6 text-xl leading-relaxed text-[var(--text)] sm:text-2xl sm:leading-snug">
-              {summary[1]}
-            </p>
-          </div>
-          <div className="flex flex-col justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8 lg:p-10">
-            <p className="text-sm text-[var(--muted)]">
-              Currently focused on shipping polished mobile experiences,
-              secure financial flows, and APIs that stay fast under load.
-            </p>
-            <Link
-              href="/about"
-              className="mt-6 inline-flex w-fit text-sm font-medium text-[var(--accent)] underline-offset-4 hover:underline"
-            >
-              More about me →
-            </Link>
-          </div>
-        </div>
-      </section>
+export default function HomePage() {
+  const web = projects.filter(isWebProject);
+  const mobile = projects.filter((p) => !isWebProject(p));
+  const featured: Project[] = [web[0]!, web[1]!, mobile[0]!];
 
-      <section className="border-t border-[var(--border)] bg-[var(--surface)]/40 py-20 lg:py-28">
-        <div className="mx-auto max-w-5xl px-6 lg:px-8">
-          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-            <div>
-              <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-                Selected work
-              </h2>
-              <p className="mt-2 max-w-lg text-lg text-[var(--text)]">
-                Apps shipped to production—fintech, community platforms, and
-                commerce.
-              </p>
-            </div>
-            <Link
-              href="/work"
-              className="text-sm font-medium text-[var(--accent)] underline-offset-4 hover:underline"
-            >
-              All projects →
-            </Link>
-          </div>
-          <ul className="mt-14 grid gap-6 lg:grid-cols-3">
-            {featured.map((p) => (
-              <li key={p.slug}>
-                <article className="group flex h-full flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 transition-colors hover:border-[var(--muted)]">
-                  <p className="text-xs text-[var(--muted)]">{p.period}</p>
-                  <h3 className="mt-3 font-display text-xl font-semibold text-[var(--text)]">
-                    <Link
-                      href={`/work/${p.slug}`}
-                      className="transition-opacity hover:opacity-80"
-                    >
-                      {p.name}
-                    </Link>
-                  </h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--muted)]">
-                    {p.tagline}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {p.stack.slice(0, 3).map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full bg-[var(--accent-dim)] px-2.5 py-0.5 text-xs text-[var(--accent)]"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-                    <Link
-                      href={`/work/${p.slug}`}
-                      className="inline-flex text-sm font-medium text-[var(--accent)] underline-offset-4 group-hover:underline"
-                    >
-                      Case study →
-                    </Link>
-                    {p.href ? (
-                      <a
-                        href={p.href}
-                        className="inline-flex text-sm font-medium text-[var(--text)] underline-offset-4 group-hover:underline"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        App Store ↗
-                      </a>
-                    ) : null}
-                  </div>
-                </article>
-              </li>
+  return (
+    <div className="max-w-3xl">
+      <section id="about" className="scroll-mt-28">
+        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
+          About
+        </h2>
+        <div className="mt-5 flex flex-col gap-8 sm:flex-row sm:items-start">
+          <ProfileAvatar
+            className="shrink-0 max-sm:mx-auto sm:mt-1"
+            size={112}
+            priority
+          />
+          <div className="min-w-0 space-y-4 text-[15px] leading-relaxed text-[var(--muted)]">
+            <p className="text-lg font-medium leading-snug text-[var(--text)]">
+              {headline}
+            </p>
+            {summary.map((para, i) => (
+              <p key={i}>{para}</p>
             ))}
-          </ul>
+            <p className="font-mono text-xs leading-relaxed text-[var(--muted)]">
+              {stackChips()}
+            </p>
+            <p>
+              <span className="font-medium text-[var(--text)]">
+                {unescoRecognition.title}
+              </span>
+              {" — "}
+              {unescoRecognition.org}, {unescoRecognition.date}.{" "}
+              {unescoRecognition.detail}
+            </p>
+            <p>
+              <Link
+                href="/about"
+                className="font-mono text-sm text-[var(--accent)] underline-offset-4 hover:underline"
+              >
+                More on About →
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
-    </>
+
+      <section id="experience" className="scroll-mt-28 mt-20">
+        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
+          Experience
+        </h2>
+        <ul className="mt-8 space-y-12">
+          {experience.map((role) => (
+            <li key={`${role.company}-${role.dates}`}>
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                <h3 className="text-base font-semibold text-[var(--text)]">
+                  {role.title} · {role.company}
+                </h3>
+                <span className="font-mono text-xs text-[var(--muted)] sm:shrink-0 sm:pl-4">
+                  {role.dates}
+                </span>
+              </div>
+              <p className="mt-1 font-mono text-xs text-[var(--muted)]">
+                {role.location}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+                {role.summary}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="projects" className="scroll-mt-28 mt-24">
+        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
+          Projects
+        </h2>
+        <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">
+          A few shipped products—web with Next.js, mobile with React Native, and
+          native Kotlin/Swift where the problem demanded it.
+        </p>
+        <ul className="mt-14 space-y-20">
+          {featured.map((p, i) => (
+            <FeaturedProjectRow key={p.slug} project={p} index={i} />
+          ))}
+        </ul>
+        <p className="mt-14">
+          <Link
+            href="/work"
+            className="font-mono text-sm text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            View full project archive →
+          </Link>
+        </p>
+      </section>
+
+      <section className="mt-20 border-t border-[var(--border)] pt-12">
+        <p className="text-sm text-[var(--muted)]">
+          Interested in working together?{" "}
+          <Link
+            href="/contact"
+            className="font-mono text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            Say hello →
+          </Link>
+        </p>
+      </section>
+    </div>
   );
 }

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { getSiteUrl, site } from "@/lib/site";
+import { seoDescription } from "@/content/profile";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Contact ${site.name} — ${site.email}. Open to senior mobile and full-stack roles.`,
+  description: `Contact Emmanuel Lubwama — ${site.email}. ${seoDescription}`,
   alternates: {
     canonical: `${getSiteUrl()}/contact`,
   },
@@ -11,21 +12,28 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-24">
-      <p className="text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-        Contact
-      </p>
-      <h1 className="font-display mt-4 text-4xl font-semibold tracking-tight text-[var(--text)] sm:text-5xl">
+    <div className="max-w-xl">
+      <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] sm:text-5xl">
         Let&apos;s work together
       </h1>
-      <p className="mt-6 max-w-xl text-lg text-[var(--muted)]">
+      <p className="mt-6 text-lg leading-relaxed text-[var(--muted)]">
         I&apos;m open to senior mobile and full-stack opportunities, contract
         work, and interesting product collaborations.
       </p>
 
-      <dl className="mt-14 space-y-8 border-t border-[var(--border)] pt-14">
+      <p className="mt-8">
+        <a
+          href={site.resumePath}
+          download
+          className="font-mono text-sm text-[var(--accent)] underline-offset-4 hover:underline"
+        >
+          Download résumé (Markdown) →
+        </a>
+      </p>
+
+      <dl className="mt-14 space-y-8 border-t border-[var(--border)] pt-12">
         <div>
-          <dt className="text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+          <dt className="font-mono text-xs font-medium text-[var(--accent)]">
             Email
           </dt>
           <dd className="mt-2">
@@ -38,7 +46,7 @@ export default function ContactPage() {
           </dd>
         </div>
         <div>
-          <dt className="text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+          <dt className="font-mono text-xs font-medium text-[var(--accent)]">
             Phone
           </dt>
           <dd className="mt-2">
@@ -51,7 +59,7 @@ export default function ContactPage() {
           </dd>
         </div>
         <div>
-          <dt className="text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+          <dt className="font-mono text-xs font-medium text-[var(--accent)]">
             Profiles
           </dt>
           <dd className="mt-4 flex flex-wrap gap-6">

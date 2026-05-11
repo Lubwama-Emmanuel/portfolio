@@ -48,7 +48,8 @@ export default function OpenGraphImage() {
             fontWeight: 400,
           }}
         >
-          Software engineer — React Native, Next.js, Node.js
+          React Native, Kotlin, Swift & Next.js — fintech, community, real-time
+          apps
         </div>
       </div>
     ),
