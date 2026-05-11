@@ -13,12 +13,12 @@ export type Project = {
   highlights: string[];
   category?: ProjectCategory;
   /**
-   * Optional static thumb under `public/` or absolute URL. When omitted, web
-   * projects use `liveUrl` via `/api/site-preview`; mobile can use `gallery[0]`.
+   * Thumbnail URL: `public/…`, absolute URL, or `/site-assets/websites/{slug}.png`
+   * for files in `projects/websites/`. When omitted, web projects use `/api/site-preview`.
    */
   image?: string;
   /**
-   * Markdown file under repo `projects/` (write-ups; images via `/project-files/<slug>/file.jpg`).
+   * Markdown case study under `projects/` (images via `/project-files/<slug>/file.jpg`).
    */
   detailMd?: string;
   /** Screenshots: `/project-files/<slug>/file` (files next to markdown) or `/projects/...` from `public/`. */
@@ -37,6 +37,7 @@ export const projects: Project[] = [
     period: "2024",
     category: "web",
     liveUrl: "https://space4climate.vercel.app",
+    image: "/site-assets/websites/space4climate.png",
     stack: ["Next.js", "React", "Tailwind CSS", "Vercel"],
     highlights: [
       "Global, kid-friendly learning on space and climate",
@@ -52,6 +53,7 @@ export const projects: Project[] = [
     period: "2024",
     category: "web",
     liveUrl: "https://masifa.vercel.app",
+    image: "/site-assets/websites/masifa.png",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     highlights: [
       "Clear pathways for referrals and family enquiries",
@@ -67,6 +69,7 @@ export const projects: Project[] = [
     period: "2024",
     category: "web",
     liveUrl: "https://queensgate.vercel.app",
+    image: "/site-assets/websites/queensgate.png",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     highlights: [
       "Structured admissions and programme discovery",
@@ -82,6 +85,7 @@ export const projects: Project[] = [
     period: "2024",
     category: "web",
     liveUrl: "https://nextgenfighthub.vercel.app",
+    image: "/site-assets/websites/nextgenfighthub.png",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     highlights: [
       "Class schedules and training programmes front and centre",
@@ -97,6 +101,7 @@ export const projects: Project[] = [
     period: "2024",
     category: "web",
     liveUrl: "https://www.mashongatea.com",
+    image: "/site-assets/websites/mashongatea.png",
     stack: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
     highlights: [
       "Service and portfolio storytelling for B2B credibility",
@@ -140,7 +145,7 @@ export const projects: Project[] = [
     ],
     highlights: [
       "Founding engineer on money movement: wallets, transfers, merchants, KYC",
-      "Payment integrations and live balances against api.wire24.co",
+      "Payment integrations and live balances wired to the production backend",
       "Architecture calls on persistence, RTK Query, and safe native feature rollout",
     ],
     interviewTakeaways: [
@@ -188,6 +193,7 @@ export const projects: Project[] = [
     gallery: [
       "/project-files/tuwe/Simulator Screenshot - iPhone 17 Pro Max - 2025-11-05 at 12.52.13.png",
       "/project-files/tuwe/Simulator Screenshot - iPhone 17 Pro Max - 2025-11-05 at 12.53.11.png",
+      "/project-files/tuwe/Simulator Screenshot - iPhone 17 Pro Max - 2025-11-05 at 12.56.36.png",
     ],
   },
   {
@@ -214,6 +220,7 @@ export const projects: Project[] = [
     gallery: [
       "/project-files/glam-n-go/Simulator Screenshot - iPhone 15 Pro Max - 2024-08-13 at 14.21.15.png",
       "/project-files/glam-n-go/Simulator Screenshot - iPhone 15 Pro Max - 2024-08-13 at 14.23.51.png",
+      "/project-files/glam-n-go/Simulator Screenshot - iPhone 15 Pro Max - 2024-08-13 at 14.28.06.png",
     ],
   },
   {
@@ -240,6 +247,7 @@ export const projects: Project[] = [
     gallery: [
       "/project-files/easy-gas/Screenshot_1732777581.png",
       "/project-files/easy-gas/Screenshot_1732777624.png",
+      "/project-files/easy-gas/Screenshot_1732777653.png",
     ],
   },
   {
@@ -247,7 +255,7 @@ export const projects: Project[] = [
     name: "NCPWD Access",
     category: "mobile",
     tagline:
-      "Mobile client for NCPWD: auth, reports, services, learning content, and notifications against a Cloud Run API.",
+      "Mobile companion for NCPWD: auth, reports, services, learning content, and notifications.",
     period: "2024",
     stack: [
       "React Native",
@@ -266,6 +274,7 @@ export const projects: Project[] = [
     gallery: [
       "/project-files/ncpwd-access/Simulator Screenshot - iPhone 17 Pro - 2026-05-06 at 04.42.11.png",
       "/project-files/ncpwd-access/Simulator Screenshot - iPhone 17 Pro - 2026-05-06 at 04.42.21.png",
+      "/project-files/ncpwd-access/Simulator Screenshot - iPhone 17 Pro - 2026-05-06 at 04.42.25.png",
     ],
   },
   {
@@ -273,7 +282,7 @@ export const projects: Project[] = [
     name: "JustKnow",
     category: "mobile",
     tagline:
-      "Expo client for posts, messaging, businesses, ride-hailing, and notifications—REST + Socket.IO to justknow.dfts.cloud.",
+      "Social and services in one app: posts, messaging, businesses, ride-hailing, and notifications.",
     period: "2024",
     stack: [
       "React Native",
@@ -314,10 +323,6 @@ export const projects: Project[] = [
       "Encrypted session storage; offline-friendly sync and retry patterns",
     ],
     detailMd: "WIMS/PORTFOLIO_WIMS_FACEMATCH.md",
-    gallery: [
-      "/project-files/wims-facematch/16ai-store-black.png",
-      "/project-files/wims-facematch/Simulator Screenshot - iPhone 17 Pro - 2026-05-06 at 04.42.11.png",
-    ],
   },
   {
     slug: "harvest-monitor",
@@ -335,6 +340,18 @@ export const projects: Project[] = [
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
+}
+
+export const MIN_MOBILE_SCREENSHOTS = 3;
+
+/** Exactly three slots for App Store–style strips (`null` = placeholder). */
+export function getMobileStripSlots(project: Project): (string | null)[] {
+  const g = project.gallery ?? [];
+  const out: (string | null)[] = [];
+  for (let i = 0; i < MIN_MOBILE_SCREENSHOTS; i++) {
+    out.push(g[i] ?? null);
+  }
+  return out;
 }
 
 export function isWebProject(project: Project): boolean {

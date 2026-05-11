@@ -2,7 +2,7 @@
 
 Each shipped product can have:
 
-1. **Markdown** — factual case study or repo-grounded notes (`.md`).
+1. **Markdown** — short case-study copy for the site (`.md`). Write for visitors, not file inventories.
 2. **Screenshots** — put images under `public/projects/<slug>/` and embed in markdown, e.g. `![Checkout flow](/projects/cafe-jafn/checkout.png)`.
 
 ## Wire a project to the site
@@ -32,13 +32,17 @@ The case study page strips the **first `#` heading** from the markdown so it doe
 
 ### Web project thumbnails
 
-Add PNG/JPG files under `public/projects/` using the same names as in `projects.ts` (e.g. `space4climate.png`, `masifa.png`). Until they exist, thumbnails may appear broken in dev; the layout is ready.
+Put marketing screenshots in **`projects/websites/`** using the **project slug** as the filename, e.g. `space4climate.png`, `masifa.png`. They are served at **`/site-assets/websites/<slug>.png`** and wired via the **`image`** field in `src/content/projects.ts`. If `image` is omitted for a web project, the UI can fall back to an automatic preview of the live URL.
+
+Web projects usually have no `detailMd`, so they do **not** use `/project-files/...` for thumbnails.
 
 ## Images next to your `.md` file
 
 If screenshots live in the **same directory** as your markdown (e.g. `projects/Cafe Jaf'n Kampala/*.jpg`), reference them with:
 
 `/project-files/<project-slug>/<filename>`
+
+**Mobile apps:** add **at least three** portrait screenshots to that folder and list them in **`gallery`** in `src/content/projects.ts`. The work index shows a three-up screenshot strip; the case study page scrolls through **all** listed shots horizontally.
 
 Example (slug must match `src/content/projects.ts`):
 

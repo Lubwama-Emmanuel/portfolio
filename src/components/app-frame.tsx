@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LuGlobe, LuSmartphone } from "react-icons/lu";
 import { SiteFooter } from "@/components/site-footer";
-import { site } from "@/lib/site";
+import { SocialLinks } from "@/components/social-links";
+import { isWebProject, projects } from "@/content/projects";
 
 const mainNav = [
   { href: "/work", label: "Work" },
@@ -35,6 +37,9 @@ function NavLink({ href, label }: { href: string; label: string }) {
 export function AppFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isWorkIndex = pathname === "/work";
+  const workMobile = projects.filter((p) => !isWebProject(p));
+  const workWeb = projects.filter(isWebProject);
 
   return (
     <>
@@ -79,32 +84,64 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
               <a className="block hover:text-[var(--text)]" href="#experience">
                 Experience
               </a>
+              <a className="block hover:text-[var(--text)]" href="#education">
+                Education
+              </a>
               <a className="block hover:text-[var(--text)]" href="#projects">
                 Projects
               </a>
             </nav>
+          ) : isWorkIndex ? (
+            <nav
+              className="mt-8 hidden flex-col gap-2 font-mono text-[11px] text-[var(--muted)] lg:flex"
+              aria-label="On this page"
+            >
+              <span className="uppercase tracking-[0.14em] text-[var(--accent)]">
+                On this page
+              </span>
+              <a
+                className="block uppercase tracking-[0.14em] hover:text-[var(--text)]"
+                href="#work-mobile"
+              >
+                Mobile &amp; native
+              </a>
+              {workMobile.map((p) => (
+                <a
+                  key={p.slug}
+                  href={`#${p.slug}`}
+                  className="flex items-start gap-2 pl-2 normal-case tracking-normal hover:text-[var(--text)]"
+                >
+                  <LuSmartphone
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]"
+                    aria-hidden
+                  />
+                  <span className="min-w-0 leading-snug">{p.name}</span>
+                </a>
+              ))}
+              <a
+                className="mt-1 block uppercase tracking-[0.14em] hover:text-[var(--text)]"
+                href="#work-web"
+              >
+                Web
+              </a>
+              {workWeb.map((p) => (
+                <a
+                  key={p.slug}
+                  href={`#${p.slug}`}
+                  className="flex items-start gap-2 pl-2 normal-case tracking-normal hover:text-[var(--text)]"
+                >
+                  <LuGlobe
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]"
+                    aria-hidden
+                  />
+                  <span className="min-w-0 leading-snug">{p.name}</span>
+                </a>
+              ))}
+            </nav>
           ) : null}
 
-          <div className="mt-8 hidden flex-col gap-2 font-mono text-xs text-[var(--muted)] lg:flex">
-            <a
-              className="hover:text-[var(--accent)]"
-              href={site.github}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              GitHub
-            </a>
-            <a
-              className="hover:text-[var(--accent)]"
-              href={site.linkedin}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              LinkedIn
-            </a>
-            <a className="hover:text-[var(--accent)]" href={`mailto:${site.email}`}>
-              Email
-            </a>
+          <div className="mt-8 hidden lg:block">
+            <SocialLinks variant="sidebar" />
           </div>
 
           <nav
@@ -115,6 +152,7 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
               <NavLink key={n.href} href={n.href} label={n.label} />
             ))}
           </nav>
+          <SocialLinks variant="mobile" />
         </header>
 
         <div className="flex min-w-0 flex-1 flex-col">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SocialLinks } from "@/components/social-links";
 import { getSiteUrl, site } from "@/lib/site";
 import { seoDescription } from "@/content/profile";
 
@@ -60,25 +61,25 @@ export default function ContactPage() {
         </div>
         <div>
           <dt className="font-mono text-xs font-medium text-[var(--accent)]">
+            WhatsApp
+          </dt>
+          <dd className="mt-2">
+            <a
+              href={site.whatsapp}
+              className="text-lg text-[var(--text)] underline-offset-4 hover:underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {site.whatsappDisplay}
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt className="font-mono text-xs font-medium text-[var(--accent)]">
             Profiles
           </dt>
-          <dd className="mt-4 flex flex-wrap gap-6">
-            <a
-              href={site.github}
-              className="text-sm font-medium text-[var(--accent)] underline-offset-4 hover:underline"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              GitHub ↗
-            </a>
-            <a
-              href={site.linkedin}
-              className="text-sm font-medium text-[var(--accent)] underline-offset-4 hover:underline"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              LinkedIn ↗
-            </a>
+          <dd>
+            <SocialLinks variant="contact" />
           </dd>
         </div>
       </dl>

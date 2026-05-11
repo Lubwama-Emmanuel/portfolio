@@ -17,10 +17,15 @@ export const site = {
   phone: "+256706039119",
   github: "https://github.com/Lubwama-Emmanuel",
   linkedin: "https://www.linkedin.com/in/lubwama-emmanuel-b35377226",
+  /** WhatsApp chat link (international number, no +). */
+  whatsapp: "https://wa.me/256763470663",
+  /** Human-readable WhatsApp number for contact copy. */
+  whatsappDisplay: "+256 763 470 663",
   /** Static résumé in `public/` (Markdown until a PDF is added). */
   resumePath: "/Emmanuel-Lubwama-Resume.md",
   sameAs: [
     "https://github.com/Lubwama-Emmanuel",
     "https://www.linkedin.com/in/lubwama-emmanuel-b35377226",
+    "https://wa.me/256763470663",
   ],
 } as const;

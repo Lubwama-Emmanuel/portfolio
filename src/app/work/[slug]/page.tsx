@@ -103,6 +103,8 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
         ) : null}
       </div>
 
+      <CaseStudyGallery project={project} placement="lead" />
+
       {markdown ? (
         <ProjectMarkdownBody markdown={markdown} />
       ) : (
@@ -110,32 +112,14 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
           <p className="text-[var(--muted)]">
             {web ? (
               <>
-                I can add a long-form write-up for this site in{" "}
-                <code className="rounded bg-[var(--accent-dim)] px-1.5 py-0.5 text-sm text-[var(--text)]">
-                  projects/
-                </code>{" "}
-                and wire it through{" "}
-                <code className="rounded bg-[var(--accent-dim)] px-1.5 py-0.5 text-sm text-[var(--text)]">
-                  detailMd
-                </code>{" "}
-                when you want more narrative beside the live URL.
+                A longer case study for this project is not published here yet.
+                You can still open the live site from the links above.
               </>
             ) : (
               <>
-                A detailed write-up for this project is not in the repo yet. Add
-                a markdown file under{" "}
-                <code className="rounded bg-[var(--accent-dim)] px-1.5 py-0.5 text-sm text-[var(--text)]">
-                  projects/&lt;folder&gt;/your-file.md
-                </code>{" "}
-                and reference it from{" "}
-                <code className="rounded bg-[var(--accent-dim)] px-1.5 py-0.5 text-sm text-[var(--text)]">
-                  detailMd
-                </code>{" "}
-                in{" "}
-                <code className="rounded bg-[var(--accent-dim)] px-1.5 py-0.5 text-sm text-[var(--text)]">
-                  src/content/projects.ts
-                </code>
-                .
+                A longer case study for this project is not published here yet.
+                Highlights below summarise the work; use the links above for the
+                live app or store listing when available.
               </>
             )}
           </p>
@@ -149,8 +133,6 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
           </ul>
         </div>
       )}
-
-      <CaseStudyGallery project={project} />
 
       <InterviewTakeaways bullets={takeaways} />
     </article>

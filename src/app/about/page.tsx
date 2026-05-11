@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProfileAvatar } from "@/components/profile-avatar";
+import { SocialLinks } from "@/components/social-links";
 import { experience } from "@/content/experience";
 import {
   seoDescription,
@@ -8,6 +9,7 @@ import {
   summary,
   unescoRecognition,
 } from "@/content/profile";
+import { education } from "@/content/education";
 import { getSiteUrl, site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -72,13 +74,13 @@ export default function AboutPage() {
           Education
         </h2>
         <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 p-6">
-          <p className="font-medium text-[var(--text)]">
-            B.Sc. Computer Engineering
-          </p>
-          <p className="mt-1 text-[var(--muted)]">Makerere University, Kampala</p>
-          <p className="mt-2 text-sm text-[var(--muted)]">2018 – 2022</p>
+          <p className="font-medium text-[var(--text)]">{education.degree}</p>
+          <p className="mt-1 text-[var(--muted)]">{education.school}</p>
+          <p className="mt-2 text-sm text-[var(--muted)]">{education.years}</p>
           <p className="mt-3 text-sm text-[var(--text)]">
-            GPA <strong className="font-semibold">4.03</strong> / 5.00
+            {education.gpaLabel}{" "}
+            <strong className="font-semibold">{education.gpa}</strong> /{" "}
+            {education.gpaScale}
           </p>
         </div>
       </section>
@@ -144,14 +146,9 @@ export default function AboutPage() {
         >
           Contact →
         </Link>
-        <a
-          href={site.linkedin}
-          className="font-mono text-sm text-[var(--muted)] underline-offset-4 hover:text-[var(--text)] hover:underline"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          LinkedIn ↗
-        </a>
+        <div className="w-full sm:w-auto">
+          <SocialLinks variant="footer" />
+        </div>
       </div>
     </div>
   );

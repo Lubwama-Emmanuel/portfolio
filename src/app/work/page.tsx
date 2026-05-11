@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjectThumb } from "@/components/project-thumb";
+import { MobileStoreStrip } from "@/components/mobile-store-strip";
 import {
   getProjectThumbSrc,
   isWebProject,
@@ -12,7 +13,7 @@ import { getSiteUrl } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Websites and mobile apps: Next.js marketing sites, React Native and native Kotlin/Swift products, fintech, and community platforms.",
+    "Mobile apps (React Native, Kotlin, Swift) and Next.js sites—fintech, commerce, and community platforms.",
   alternates: {
     canonical: `${getSiteUrl()}/work`,
   },
@@ -108,7 +109,11 @@ function ProjectRow({ p, index }: { p: Project; index: number }) {
     </div>
   );
 
-  const media = thumb ? (
+  const media = !isWebProject(p) ? (
+    <div className="shrink-0 lg:max-w-[min(100%,680px)]">
+      <MobileStoreStrip project={p} href={`/work/${p.slug}`} />
+    </div>
+  ) : thumb ? (
     <Link
       href={`/work/${p.slug}`}
       className="block shrink-0 lg:max-w-md"
@@ -122,7 +127,10 @@ function ProjectRow({ p, index }: { p: Project; index: number }) {
 
   return (
     <li>
-      <article className="grid gap-8 border-t border-[var(--border)] pt-12 lg:grid-cols-2 lg:items-start lg:gap-10">
+      <article
+        id={p.slug}
+        className="scroll-mt-28 grid gap-8 border-t border-[var(--border)] pt-12 lg:grid-cols-2 lg:items-start lg:gap-10"
+      >
         {flip ? (
           <>
             <div className="lg:order-2">{media}</div>
@@ -146,28 +154,15 @@ export default function WorkPage() {
   return (
     <div className="max-w-3xl">
       <h1 className="text-4xl font-semibold tracking-tight text-[var(--text)] sm:text-5xl">
-        Websites &amp; mobile products
+        Mobile products &amp; web
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
-        Next.js sites for schools, care providers, and brands—plus React Native
-        and Kotlin/Swift apps for fintech, commerce, and community platforms.
+        React Native and Kotlin/Swift apps for fintech, commerce, and community
+        platforms—plus Next.js marketing and product sites for schools, care
+        providers, and brands.
       </p>
 
-      <section className="mt-16">
-        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
-          Web
-        </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">
-          Marketing and product sites deployed on Vercel or the open web.
-        </p>
-        <ul className="mt-10 space-y-0">
-          {web.map((p, i) => (
-            <ProjectRow key={p.slug} p={p} index={i} />
-          ))}
-        </ul>
-      </section>
-
-      <section className="mt-8">
+      <section id="work-mobile" className="scroll-mt-28 mt-16">
         <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
           Mobile &amp; native
         </h2>
@@ -177,6 +172,20 @@ export default function WorkPage() {
         </p>
         <ul className="mt-10 space-y-0">
           {mobile.map((p, i) => (
+            <ProjectRow key={p.slug} p={p} index={i} />
+          ))}
+        </ul>
+      </section>
+
+      <section id="work-web" className="scroll-mt-28 mt-8">
+        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
+          Web
+        </h2>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">
+          Marketing and product sites deployed on Vercel or the open web.
+        </p>
+        <ul className="mt-10 space-y-0">
+          {web.map((p, i) => (
             <ProjectRow key={p.slug} p={p} index={i} />
           ))}
         </ul>

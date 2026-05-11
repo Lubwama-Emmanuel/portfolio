@@ -4,7 +4,7 @@ type Props = {
 };
 
 export function InterviewTakeaways({
-  title = "What I would highlight in an interview",
+  title = "Highlights",
   bullets,
 }: Props) {
   if (!bullets.length) return null;

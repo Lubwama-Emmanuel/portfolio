@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProfileAvatar } from "@/components/profile-avatar";
+import { MobileStoreStrip } from "@/components/mobile-store-strip";
 import { ProjectThumb } from "@/components/project-thumb";
 import { experience } from "@/content/experience";
 import {
@@ -10,6 +11,7 @@ import {
   summary,
   unescoRecognition,
 } from "@/content/profile";
+import { education } from "@/content/education";
 import {
   getProjectThumbSrc,
   isWebProject,
@@ -94,7 +96,15 @@ function FeaturedProjectRow({
     </div>
   );
 
-  const media = thumb ? (
+  const media = !isWebProject(p) ? (
+    <div className="w-full max-w-xl shrink-0">
+      <MobileStoreStrip
+        project={p}
+        href={`/work/${p.slug}`}
+        compact
+      />
+    </div>
+  ) : thumb ? (
     <Link
       href={`/work/${p.slug}`}
       className="block shrink-0"
@@ -126,9 +136,8 @@ function FeaturedProjectRow({
 }
 
 export default function HomePage() {
-  const web = projects.filter(isWebProject);
   const mobile = projects.filter((p) => !isWebProject(p));
-  const featured: Project[] = [web[0]!, web[1]!, mobile[0]!];
+  const featured: Project[] = mobile.slice(0, 3);
 
   return (
     <div className="max-w-3xl">
@@ -198,13 +207,36 @@ export default function HomePage() {
         </ul>
       </section>
 
+      <section id="education" className="scroll-mt-28 mt-20">
+        <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
+          Education
+        </h2>
+        <div className="mt-5 rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 p-6">
+          <p className="font-medium text-[var(--text)]">{education.degree}</p>
+          <p className="mt-1 text-[var(--muted)]">{education.school}</p>
+          <p className="mt-2 text-sm text-[var(--muted)]">{education.years}</p>
+          <p className="mt-3 text-sm text-[var(--text)]">
+            {education.gpaLabel}{" "}
+            <strong className="font-semibold">{education.gpa}</strong> /{" "}
+            {education.gpaScale}
+          </p>
+        </div>
+      </section>
+
       <section id="projects" className="scroll-mt-28 mt-24">
         <h2 className="font-mono text-sm font-medium text-[var(--accent)]">
           Projects
         </h2>
         <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">
-          A few shipped products—web with Next.js, mobile with React Native, and
-          native Kotlin/Swift where the problem demanded it.
+          Three mobile products first—React Native and native Kotlin/Swift where
+          it mattered. For Next.js marketing and product sites, see the full{" "}
+          <Link
+            href="/work"
+            className="text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            work archive
+          </Link>
+          .
         </p>
         <ul className="mt-14 space-y-20">
           {featured.map((p, i) => (
