@@ -1,0 +1,45 @@
+# Project write-ups & assets
+
+Each shipped product can have:
+
+1. **Markdown** — factual case study or repo-grounded notes (`.md`).
+2. **Screenshots** — put images under `public/projects/<slug>/` and embed in markdown, e.g. `![Checkout flow](/projects/cafe-jafn/checkout.png)`.
+
+## Wire a project to the site
+
+1. Add or reuse a folder here (e.g. `WIMS/`, `Cafe Jaf'n Kampala/`).
+2. In `src/content/projects.ts`, set **`detailMd`** to the path **relative to this `projects/` directory**, for example:
+   - `WIMS/PORTFOLIO_WIMS_FACEMATCH.md`
+   - `Cafe Jaf'n Kampala/portfolio-cafe-jafn-mobile.md`
+3. Ensure **`slug`** in `projects.ts` matches the URL (`/work/cafe-jafn`, `/work/wims-facematch`).
+
+The case study page strips the **first `#` heading** from the markdown so it doesn’t repeat the page title.
+
+## Current files
+
+| Project slug | Markdown source |
+|--------------|-------------------|
+| `wire24` | `Wire24/PORTFOLIO-WIRE24.md` |
+| `cafe-jafn` | `Cafe Jaf'n Kampala/portfolio-cafe-jafn-mobile.md` |
+| `tuwe` | `Tuwe/PORTFOLIO_PROJECT_BRIEF.md` |
+| `glam-n-go` | `Glam n' Go/PORTFOLIO_glam_n_go.md` |
+| `easy-gas` | `EasyGas/portfolio-easygas-job-search.md` |
+| `ncpwd-access` | `NCPWD/portfolio-ncpwd-access-app.md` |
+| `justknow` | `Justknow/PORTFOLIO.md` |
+| `wims-facematch` | `WIMS/PORTFOLIO_WIMS_FACEMATCH.md` |
+
+`harvest-monitor` has no `detailMd` yet—add a folder + file when ready.
+
+## Images next to your `.md` file
+
+If screenshots live in the **same directory** as your markdown (e.g. `projects/Cafe Jaf'n Kampala/*.jpg`), reference them with:
+
+`/project-files/<project-slug>/<filename>`
+
+Example (slug must match `src/content/projects.ts`):
+
+```md
+![](/project-files/cafe-jafn/1755162313506.jpg)
+```
+
+Alternatively, put copies under `public/projects/<slug>/` and use `/projects/<slug>/file.png` (static hosting, no route).

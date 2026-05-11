@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand */
+  --bg: #013e37;
+  --surface: #0a4a43;
+  --border: rgba(255, 239, 179, 0.14);
+  --text: #ffefb3;
+  --muted: rgba(255, 239, 179, 0.68);
+  --accent: #ffefb3;
+  --accent-dim: rgba(255, 239, 179, 0.12);
+  --on-accent: #013e37;
+  --ring: rgba(255, 239, 179, 0.45);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+/* Focus rings for keyboard users */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Case-study markdown (react-markdown) */
+.md-prose {
+  margin-top: 3rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.md-prose > :first-child {
+  margin-top: 0;
+}
+
+.md-prose h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.md-prose h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.md-prose h4 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.md-prose p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.md-prose ul,
+.md-prose ol {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1.35rem;
+}
+
+.md-prose li {
+  margin-top: 0.35rem;
+}
+
+.md-prose li::marker {
+  color: var(--accent);
+}
+
+.md-prose strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.md-prose a {
+  color: var(--accent);
+}
+
+.md-prose hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.md-prose blockquote {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+.md-prose code {
+  border-radius: 0.25rem;
+  background: var(--accent-dim);
+  padding: 0.15rem 0.4rem;
+  font-size: 0.875em;
+  color: var(--text);
+}
+
+.md-prose pre {
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+  font-size: 0.875rem;
+}
+
+.md-prose pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+}
+
+.md-prose table {
+  margin: 1.5rem 0;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.md-prose th,
+.md-prose td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.md-prose th {
+  font-weight: 600;
+  color: var(--text);
+  background: var(--accent-dim);
+}
