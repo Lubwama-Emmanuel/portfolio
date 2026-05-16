@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Emmanuel Lubwama — Software Engineer";
+export const alt = "Emmanuel Lubwama | React Native & Mobile Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -48,8 +48,7 @@ export default function OpenGraphImage() {
             fontWeight: 400,
           }}
         >
-          React Native, Kotlin, Swift & Next.js — fintech, community, real-time
-          apps
+          React Native · Kotlin · Swift · Next.js — Kampala, Uganda
         </div>
       </div>
     ),

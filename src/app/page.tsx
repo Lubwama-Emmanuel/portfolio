@@ -6,7 +6,6 @@ import { ProjectThumb } from "@/components/project-thumb";
 import { experience } from "@/content/experience";
 import {
   headline,
-  seoDescription,
   skillGroups,
   summary,
   unescoRecognition,
@@ -18,14 +17,12 @@ import {
   projects,
   type Project,
 } from "@/content/projects";
-import { getSiteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  description: seoDescription,
-  alternates: {
-    canonical: getSiteUrl(),
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/",
+  isHome: true,
+});
 
 function stackChips() {
   return skillGroups

@@ -10,15 +10,14 @@ import {
   unescoRecognition,
 } from "@/content/profile";
 import { education } from "@/content/education";
-import { getSiteUrl, site } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description: seoDescription,
-  alternates: {
-    canonical: `${getSiteUrl()}/about`,
-  },
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

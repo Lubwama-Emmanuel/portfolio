@@ -8,16 +8,14 @@ import {
   projects,
   type Project,
 } from "@/content/projects";
-import { getSiteUrl } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Work",
   description:
     "Mobile apps (React Native, Kotlin, Swift) and Next.js sites—fintech, commerce, and community platforms.",
-  alternates: {
-    canonical: `${getSiteUrl()}/work`,
-  },
-};
+  path: "/work",
+});
 
 function ProjectLinks({ p }: { p: Project }) {
   const hasCaseStudy = Boolean(p.detailMd);

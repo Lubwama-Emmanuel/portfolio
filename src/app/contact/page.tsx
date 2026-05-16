@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { SocialLinks } from "@/components/social-links";
-import { getSiteUrl, site } from "@/lib/site";
 import { seoDescription } from "@/content/profile";
+import { pageMetadata } from "@/lib/seo";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description: `Contact Emmanuel Lubwama — ${site.email}. ${seoDescription}`,
-  alternates: {
-    canonical: `${getSiteUrl()}/contact`,
-  },
-};
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

@@ -20,22 +20,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return { title: "Not found" };
 
   const base = getSiteUrl();
+  const url = `${base}/work/${project.slug}`;
   const thumb = getProjectThumbSrc(project);
+  const title = `${project.name} | Emmanuel Lubwama`;
   return {
     title: project.name,
     description: project.tagline,
     alternates: {
-      canonical: `${base}/work/${project.slug}`,
+      canonical: url,
     },
     openGraph: {
-      title: `${project.name} — Emmanuel Lubwama`,
+      type: "article",
+      title,
       description: project.tagline,
-      url: `${base}/work/${project.slug}`,
-      images: thumb ? [{ url: thumb }] : undefined,
+      url,
+      images: thumb ? [{ url: thumb, alt: `${project.name} preview` }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.name} — Emmanuel Lubwama`,
+      title,
       description: project.tagline,
       images: thumb ? [thumb] : undefined,
     },

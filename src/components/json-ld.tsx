@@ -1,17 +1,7 @@
-import { getSiteUrl, site } from "@/lib/site";
+import { getStructuredDataGraph } from "@/lib/structured-data";
 
 export function JsonLd() {
-  const url = getSiteUrl();
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: site.name,
-    jobTitle: site.title,
-    url,
-    image: `${url}/emmanuel.jpg`,
-    email: site.email,
-    sameAs: [...site.sameAs],
-  };
+  const data = getStructuredDataGraph();
 
   return (
     <script

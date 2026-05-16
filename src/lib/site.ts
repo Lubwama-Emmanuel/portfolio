@@ -2,7 +2,7 @@
  * Canonical site URL for Open Graph, Twitter cards, sitemap, and JSON-LD.
  * Override with NEXT_PUBLIC_SITE_URL in `.env.local` (e.g. http://localhost:3000 for purely local OG testing).
  */
-const DEFAULT_SITE_URL = "https://portfolio-two-ruby-56.vercel.app";
+const DEFAULT_SITE_URL = "https://www.emmanuellubwama.com";
 
 export function getSiteUrl(): string {
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -12,7 +12,14 @@ export function getSiteUrl(): string {
 
 export const site = {
   name: "Emmanuel Lubwama",
+  /** Legacy label; prefer `jobTitle` for SEO and structured data. */
   title: "Software Engineer",
+  jobTitle: "React Native & Mobile Engineer",
+  location: {
+    locality: "Kampala",
+    country: "Uganda",
+    countryCode: "UG",
+  },
   email: "lubwamaemmanuel1@gmail.com",
   phone: "+256706039119",
   github: "https://github.com/Lubwama-Emmanuel",

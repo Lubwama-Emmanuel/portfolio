@@ -3,8 +3,9 @@ import { Geist, Geist_Mono, Syne } from "next/font/google";
 import { AppFrame } from "@/components/app-frame";
 import { CursorSpotlight } from "@/components/cursor-spotlight";
 import { JsonLd } from "@/components/json-ld";
-import { seoDescription } from "@/content/profile";
-import { getSiteUrl } from "@/lib/site";
+import { seoDescription, seoTitle } from "@/content/profile";
+import { seoKeywords } from "@/lib/seo";
+import { getSiteUrl, site } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,25 +24,49 @@ const syne = Syne({
   weight: ["500", "600", "700", "800"],
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(getSiteUrl()),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "Emmanuel Lubwama — Software Engineer",
-    template: "%s — Emmanuel Lubwama",
+    default: seoTitle,
+    template: "%s | Emmanuel Lubwama",
   },
   description: seoDescription,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: siteUrl }],
+  creator: site.name,
+  keywords: [...seoKeywords],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Emmanuel Lubwama",
-    title: "Emmanuel Lubwama — Software Engineer",
+    url: siteUrl,
+    siteName: site.name,
+    title: seoTitle,
     description: seoDescription,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Emmanuel Lubwama — Software Engineer",
+    title: seoTitle,
     description: seoDescription,
   },
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
 };
 
 export const viewport: Viewport = {
