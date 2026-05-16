@@ -32,8 +32,9 @@ export function CaseStudyGallery({ project, placement = "default" }: Props) {
         <h2 className="font-display text-xl font-semibold text-[var(--text)]">
           Product visuals
         </h2>
-        <p className="mt-3 text-sm text-[var(--muted)]">
-          Screenshots for this project will appear here when they are added.
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--muted)]">
+          Previews are coming soon. I&apos;ll share screens when I&apos;m
+          allowed to—some of this work is still under NDA.
         </p>
       </section>
     );

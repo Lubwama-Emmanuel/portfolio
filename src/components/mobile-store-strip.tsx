@@ -48,13 +48,11 @@ function RawShot({
       className={`flex min-h-[120px] w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-[var(--border)] bg-[var(--accent-dim)]/30 px-2 py-6 text-center ${maxH}`}
     >
       <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-[var(--muted)]">
-        Preview
+        Previews soon
       </span>
-      <span className="text-[10px] leading-snug text-[var(--muted)]/80">
-        Add PNGs next to the case study markdown in{" "}
-        <code className="rounded bg-white/5 px-1 text-[var(--accent)]">
-          projects/
-        </code>
+      <span className="max-w-[14rem] text-[10px] leading-snug text-[var(--muted)]/80">
+        I&apos;ll add screens here when I&apos;m allowed to share them—some of
+        this work is still under NDA.
       </span>
     </div>
   );
